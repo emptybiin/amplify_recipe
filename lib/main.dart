@@ -1,3 +1,6 @@
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_recipe/amplifyconfiguration.dart';
 import 'package:amplify_recipe/shared/data/database/isar_provider.dart';
 import 'package:amplify_recipe/shared/data/implementation/local_notification_repository.dart';
 import 'package:amplify_recipe/shared/data/implementation/local_recipe_repository.dart';
@@ -18,8 +21,22 @@ final getIt = GetIt.instance;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _configureAmplify();
   await _registerData();
   runApp(const MyApp());
+}
+
+Future<void> _configureAmplify() async {
+  try {
+    await Amplify.addPlugins(
+        [
+          AmplifyAuthCognito(),
+        ]
+    );
+    await Amplify.configure(amplifyconfig);
+  } on AmplifyException catch (e) {
+    safePrint(e.message);
+  } 
 }
 
 Future<void> _registerData() async {
@@ -52,6 +69,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme(context),
       debugShowCheckedModeBanner: false,
       routerConfig: routerConfig,
+
     );
   }
 }
