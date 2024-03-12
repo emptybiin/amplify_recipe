@@ -134,17 +134,26 @@ class MockAuthenticationRepository extends AuthenticationRepository {
   }
 
   @override
-  Future<void> logInWithGoogle() {
-    return Future.delayed(
-      const Duration(seconds: 1),
-    );
+  Future<void> logInWithGoogle() async {
+    try {
+      await Amplify.Auth.signInWithWebUI(
+        provider: AuthProvider.google,
+      );
+      await generateCurrentUserInformation();
+    } on AuthException catch (e) {
+      safePrint('Error signing in: ${e.message}');
+      rethrow;
+    }
   }
 
   @override
-  Future<void> signOut() {
-    return Future.delayed(
-      const Duration(seconds: 1),
-    );
+  Future<void> signOut() async {
+    final result = await Amplify.Auth.signOut();
+    if (result is CognitoCompleteSignOut) {
+      safePrint('Sign out completed successfully');
+    } else if (result is CognitoFailedSignOut) {
+      safePrint('Error signing user out: ${result.exception.message}');
+    }
   }
 
   @override
