@@ -1,0 +1,55 @@
+name: instantrip_sub
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.5.0-18.0.dev <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  cached_network_image: ^3.3.0
+  flutter_svg: ^2.0.9
+  get: ^4.6.6
+  shared_preferences: ^2.2.2
+  connectivity_plus: ^5.0.2
+  carousel_slider: ^4.2.1
+  smooth_page_indicator: ^1.1.0
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/
+
+  fonts:
+    - family: Noto Sans
+      fonts:
+        - asset: assets/fonts/NotoSansSemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/NotoSansRegular.ttf
+          weight: 400
+        - asset: assets/fonts/NotoSansLight.ttf
+          weight: 300
+        - asset: assets/fonts/NotoSansBold.ttf
+          weight: 700
+        - asset: assets/fonts/NotoSansMedium.ttf
+          weight: 500
+    - family: ONE Mobile Title
+      fonts:
+        - asset: assets/fonts/ONE Mobile Title.ttf
+          weight: 600
