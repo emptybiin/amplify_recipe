@@ -6,6 +6,7 @@ import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import { SpeechRecognition } from "@capacitor-community/speech-recognition";
 import { LocalNotifications } from "@capacitor/local-notifications";
+import { App as CapApp } from "@capacitor/app";
 
 // 네이티브(안드로이드) 여부 + 영구 저장소 헬퍼
 const isNative = Capacitor.isNativePlatform();
@@ -303,6 +304,7 @@ export default function App() {
   const [forgotA, setForgotA] = useState(""); // 잠금화면 복구 답 입력
   const pinFirstRef = useRef("");
   const pendingPinRef = useRef("");
+  const lastTabRef = useRef("capture"); // 상세/설정에서 뒤로 갈 기준 탭
   // 아침 기록 알림
   const [reminderOn, setReminderOn] = useState(false);
   const [reminderTime, setReminderTime] = useState("08:00");
@@ -358,6 +360,38 @@ export default function App() {
     document.addEventListener("visibilitychange", onHide);
     return () => document.removeEventListener("visibilitychange", onHide);
   }, [lockPin]);
+
+  // 마지막으로 머문 탭 기억 (상세/설정에서 뒤로 갈 기준)
+  useEffect(() => {
+    if (["capture", "journal", "calendar", "stats"].includes(view)) lastTabRef.current = view;
+  }, [view]);
+
+  // 안드로이드 하드웨어 뒤로가기 — 종료 대신 이전 화면으로, 홈에서만 종료
+  useEffect(() => {
+    if (!isNative) return;
+    let handle;
+    const onBack = () => {
+      // 잠금 화면: 종료/이동 대신 백그라운드로 (복구 폼은 닫기)
+      if (locked && lockPin) {
+        if (lockModal === "forgot") { setLockModal(null); setLockError(""); setForgotA(""); return; }
+        CapApp.minimizeApp(); return;
+      }
+      // 열려 있는 모달/오버레이부터 닫기
+      if (lockModal) { setLockModal(null); setLockError(""); pendingPinRef.current = ""; pinFirstRef.current = ""; return; }
+      if (pendingDelete !== null) { setPendingDelete(null); return; }
+      if (showMonthPicker) { setShowMonthPicker(false); return; }
+      // 화면별 뒤로가기
+      if (view === "detail") {
+        if (editing) { setEditing(false); return; }   // 편집 중이면 편집만 닫기
+        setView(lastTabRef.current || "journal"); return;
+      }
+      if (view === "settings") { setView(lastTabRef.current || "capture"); return; }
+      if (view !== "capture") { setView("capture"); return; }  // 다른 탭 → 홈(기록)
+      CapApp.exitApp();  // 홈에서 뒤로가기 → 앱 종료
+    };
+    CapApp.addListener("backButton", onBack).then((h) => { handle = h; });
+    return () => { if (handle) handle.remove(); };
+  }, [view, lockModal, pendingDelete, showMonthPicker, editing, locked, lockPin]);
 
   const persist = async (next) => {
     setEntries(next);
@@ -717,7 +751,7 @@ export default function App() {
   const minYear = recordedYears.length ? Math.min(...recordedYears) : now.getFullYear();
   const topSlot = bySlot.reduce((a, b) => (b.value > a.value ? b : a), { label: "-", value: 0 });
   const byTag = TAGS.map((t) => ({ label: t, value: entries.filter((e) => (e.tags || []).includes(t)).length })).filter((d) => d.value > 0);
-  const byMood = MOODS.map((m) => ({ label: `${m.emoji} ${m.label}`, value: entries.filter((e) => e.mood === m.v).length }));
+  const byMood = MOODS.map((m) => ({ label: m.emoji, value: entries.filter((e) => e.mood === m.v).length }));
   const moodEntries = entries.filter((e) => moodOf(e.mood));
   const moodAvg = moodEntries.length ? (moodEntries.reduce((s, e) => s + e.mood, 0) / moodEntries.length) : 0;
   const usedTags = TAGS.filter((t) => entries.some((e) => (e.tags || []).includes(t)));
