@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 드림노트 아이콘 배경 — 새벽빛 그라데이션 (밤하늘 → 보라 → 동트는 빛) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M0,0 h108 v108 h-108 z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="54" android:startY="0"
+                android:endX="54" android:endY="108">
+                <item android:offset="0.0" android:color="#FF1B1A38" />
+                <item android:offset="0.6" android:color="#FF2A2752" />
+                <item android:offset="1.0" android:color="#FF4A3A63" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

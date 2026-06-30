@@ -1,0 +1,11 @@
+{
+  "appId": "com.dreamnote.app",
+  "appName": "드림노트",
+  "webDir": "dist",
+  "backgroundColor": "#13122a",
+  "plugins": {
+    "SpeechRecognition": {
+      "language": "ko-KR"
+    }
+  }
+}

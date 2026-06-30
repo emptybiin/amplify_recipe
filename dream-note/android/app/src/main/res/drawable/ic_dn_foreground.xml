@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 드림노트 아이콘 전경 — 초승달 + 작은 별 (새벽빛) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 초승달: 큰 원에서 살짝 비낀 작은 원을 빼서(evenOdd) 만든다 -->
+    <path
+        android:fillColor="#F0A87E"
+        android:fillType="evenOdd"
+        android:pathData="M28,52 a26,26 0 1,0 52,0 a26,26 0 1,0 -52,0 z M45,42 a21,21 0 1,0 42,0 a21,21 0 1,0 -42,0 z" />
+    <!-- 작은 별 둘 -->
+    <path
+        android:fillColor="#F4C9A8"
+        android:pathData="M29,75 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0 z" />
+    <path
+        android:fillColor="#F4C9A8"
+        android:pathData="M77,64 a2.2,2.2 0 1,0 4.4,0 a2.2,2.2 0 1,0 -4.4,0 z" />
+</vector>

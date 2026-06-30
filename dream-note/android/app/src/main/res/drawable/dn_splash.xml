@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 드림노트 스플래시 — 밤하늘 배경 + 가운데 초승달 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/dn_night" />
+    <item
+        android:width="200dp"
+        android:height="200dp"
+        android:drawable="@drawable/ic_dn_foreground"
+        android:gravity="center" />
+</layer-list>

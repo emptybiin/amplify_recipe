@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+*.log
+
+# 네이티브 프로젝트의 빌드 산출물은 각 플랫폼의 자체 .gitignore가 제외합니다.
+# (android/.gitignore 가 build/, .gradle/, *.apk 등을 무시 — 소스와 권한/아이콘 설정은 커밋됨)
+/ios
